@@ -1,0 +1,16 @@
+{
+  "name": "03",
+  "version": "1.0.0",
+  "description": "practice",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vite",
+    "start": "vite build"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "three": "^0.169.0",
+    "vite": "^5.4.9"
+  }
+}
