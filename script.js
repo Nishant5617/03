@@ -9,9 +9,9 @@ const canvas = document.getElementById("webgl");
 //scene
 const scene = new THREE.Scene();
 
-const sizes = {
-  width: 1000,
-  height: 1000,
+let sizes = {
+  width: window.innerWidth,
+  height: window.innerHeight,
 };
 
 //camera
@@ -70,8 +70,8 @@ const renderer = new THREE.WebGLRenderer({
 
 renderer.setSize(sizes.width, sizes.height);
 
-gsap.to(mesh1.position, { duration: 2, delay: 1, x: 2 });
-gsap.to(mesh1.position, { duration: 4, delay: 3, x: -2 });
+// gsap.to(mesh1.position, { duration: 2, delay: 1, x: 2 });
+// gsap.to(mesh1.position, { duration: 4, delay: 3, x: -2 });
 
 renderer.render(scene, camera);
 
@@ -79,6 +79,21 @@ renderer.render(scene, camera);
 
 //clock
 const clock = new THREE.Clock();
+
+console.log(sizes);
+
+const resetSize = () => {
+  sizes.width = window.innerWidth;
+  sizes.height = window.innerHeight;
+  renderer.setSize(sizes.width, sizes.height);
+  camera.aspect = sizes.width / sizes.height;
+  camera.updateProjectionMatrix();
+  console.log(`function called`);
+  console.log(sizes.width);
+  console.log(sizes.height);
+};
+
+window.onresize = resetSize;
 
 //animation
 const tick = () => {
@@ -90,7 +105,7 @@ const tick = () => {
 
   // console.log(deltaTime);
 
-  // grp.rotation.z = Math.sin(elapsedTime);
+  mesh1.position.x = Math.sin(elapsedTime);
   // grp.rotation.y = Math.cos(elapsedTime);
   camera.lookAt(mesh1.position);
   // camera.position.x = Math.cos(elapsedTime);
