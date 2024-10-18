@@ -4,13 +4,14 @@
   "description": "practice",
   "main": "index.html",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "start": "vite build"
   },
   "author": "nishant",
   "license": "ISC",
   "dependencies": {
     "gsap": "^3.5.1",
+    "lil-gui": "^0.19.2",
     "three": "^0.169.0",
     "vite": "^5.4.9"
   }
