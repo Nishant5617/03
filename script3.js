@@ -3,6 +3,8 @@ import { OrbitControls } from "three/examples/jsm/Addons.js";
 import gsap from "gsap";
 import GUI from "lil-gui";
 
+document.querySelector(`title`).textContent = `Debug`;
+
 //Constants
 const sizes = {
   x: window.innerWidth,
