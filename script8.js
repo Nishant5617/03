@@ -64,47 +64,31 @@ mat1.side = THREE.DoubleSide;
 // mat1.opacity = 0.7;
 const mat2 = new THREE.MeshBasicMaterial({ map: colorTexture });
 const mat3 = new THREE.MeshBasicMaterial({ map: colorTexture });
-const lambert = new THREE.MeshStandardMaterial({
-  map: colorTexture,
-  metalnessMap: metalnessTexture,
-  roughnessMap: roughnessTexture,
-  normalMap: normalTexture,
-  aoMap: ambientOcclusionTexture,
-  alphaMap: alphaTexture,
-  displacementMap: heightTexture,
-  displacementScale: 0.05,
+const material = new THREE.MeshPhysicalMaterial({
+  color: 0xcc0000
 });
-lambert.transparent = true;
-lambert.side = THREE.DoubleSide;
 
 //Mesh
-const mesh1 = new THREE.Mesh(torus, lambert);
+const mesh1 = new THREE.Mesh(torus, material);
 mesh1.position.x = 1.3;
 scene.add(mesh1);
-const mesh2 = new THREE.Mesh(sphere, lambert);
+const mesh2 = new THREE.Mesh(sphere, material);
 mesh2.position.x = -1.3;
 scene.add(mesh2);
-const mesh3 = new THREE.Mesh(plane, lambert);
+const mesh3 = new THREE.Mesh(box, material);
 mesh3.position.x = 0;
 scene.add(mesh3);
 
 //lights
-// const ambLight = new THREE.AmbientLight(0xffffff, 1);
-// scene.add(ambLight);
+const ambLight = new THREE.AmbientLight(0xffffff, 1);
+scene.add(ambLight);
 // const ptLight = new THREE.PointLight(0xffffff, 30);
 // scene.add(ptLight);
 // ptLight.position.x = 5;
 
-const env = new RGBELoader();
-env.load(`src/squash_court_1k.hdr`, (envMap) => {
-  envMap.mapping = THREE.EquirectangularReflectionMapping;
-  scene.background = envMap;
-  scene.environment = envMap;
-});
-
 //GUI
-gui.add(lambert, `metalness`).min(0).max(1).step(0.01);
-gui.add(lambert, `roughness`).min(0).max(1).step(0.01);
+gui.add(material, `metalness`).min(0).max(1).step(0.01);
+gui.add(material, `roughness`).min(0).max(1).step(0.01);
 
 //Camera
 const camera = new THREE.PerspectiveCamera(45, sizes.x / sizes.y, 0.1, 100);
