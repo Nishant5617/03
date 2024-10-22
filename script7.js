@@ -19,8 +19,6 @@ const gui = new GUI();
 const textureLoader = new THREE.TextureLoader();
 const matcap = textureLoader.load(`src/assets/images/matcaps/8.png`);
 // const debugObject = {};
-const texLoader = new THREE.TextureLoader();
-const matcap = texLoader.load(`src/assets/images/matcaps/8.png`);
 
 //Scene
 const scene = new THREE.Scene();
@@ -28,7 +26,7 @@ const scene = new THREE.Scene();
 //Text Geometry
 const fontLoader = new FontLoader();
 fontLoader.load(`src/helvetiker_bold.typeface.json`, (font) => {
-  const textGeometry = new TextGeometry(`Nishi Daddy`, {
+  const textGeometry = new TextGeometry(`Nishant`, {
     font: font,
     size: 2,
     depth: 1,
