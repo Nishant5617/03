@@ -17,6 +17,8 @@ const sizes = {
 const canvas = document.getElementById(`webgl`);
 const gui = new GUI();
 // const debugObject = {};
+const texLoader = new THREE.TextureLoader();
+const matcap = texLoader.load(`src/assets/images/matcaps/8.png`);
 
 //Scene
 const scene = new THREE.Scene();
@@ -35,11 +37,13 @@ fontLoader.load(`src/helvetiker_bold.typeface.json`, (font) => {
     bevelOffset: 0,
     bevelSegments: 3,
   });
+
+  textGeometry.center();
   //Materials
-  const material = new THREE.MeshPhysicalMaterial({
-    color: 0xcccccc,
-    transparent: true,
-    opacity: 0.6,
+  const material = new THREE.MeshMatcapMaterial({
+    matcap,
+    // transparent: true,
+    // opacity: 0.6,
   });
 
   //Mesh
@@ -48,11 +52,26 @@ fontLoader.load(`src/helvetiker_bold.typeface.json`, (font) => {
   scene.add(textMesh);
 });
 
+const torusGeo = new THREE.TorusGeometry();
+const material = new THREE.MeshMatcapMaterial({
+  matcap,
+});
+
+for (let i = 0; i < 500; i++) {
+  const torusMesh = new THREE.Mesh(torusGeo, material);
+  scene.add(torusMesh);
+  torusMesh.position.x = (Math.random() - 0.5) * 100;
+  torusMesh.position.z = (Math.random() - 0.5) * 100;
+  torusMesh.position.y = (Math.random() - 0.5) * 100;
+  torusMesh.rotation.y = Math.random() * Math.PI;
+  torusMesh.rotation.x = Math.random() * Math.PI;
+}
+
 //lights
 const env = new RGBELoader();
 env.load(`src/squash_court_1k.hdr`, (envMap) => {
   envMap.mapping = THREE.EquirectangularReflectionMapping;
-  scene.background = envMap;
+  // scene.background = envMap;
   scene.environment = envMap;
 });
 
@@ -65,7 +84,7 @@ scene.add(axes);
 // gui.add(lambert, `roughness`).min(0).max(1).step(0.01);
 
 //Camera
-const camera = new THREE.PerspectiveCamera(45, sizes.x / sizes.y, 0.1, 100);
+const camera = new THREE.PerspectiveCamera(45, sizes.x / sizes.y, 0.1, 500);
 scene.add(camera);
 camera.position.z = 18;
 
