@@ -16,6 +16,8 @@ const sizes = {
 };
 const canvas = document.getElementById(`webgl`);
 const gui = new GUI();
+const textureLoader = new THREE.TextureLoader();
+const matcap = textureLoader.load(`src/assets/images/matcaps/8.png`);
 // const debugObject = {};
 const texLoader = new THREE.TextureLoader();
 const matcap = texLoader.load(`src/assets/images/matcaps/8.png`);
@@ -26,17 +28,27 @@ const scene = new THREE.Scene();
 //Text Geometry
 const fontLoader = new FontLoader();
 fontLoader.load(`src/helvetiker_bold.typeface.json`, (font) => {
-  const textGeometry = new TextGeometry(`Nishant`, {
+  const textGeometry = new TextGeometry(`Nishi Daddy`, {
     font: font,
-    size: 5,
-    depth: 0.1,
+    size: 2,
+    depth: 1,
     curveSegments: 12,
     bevelEnabled: true,
-    bevelThickness: 1,
+    bevelThickness: 0.1,
     bevelSize: 0.1,
     bevelOffset: 0,
-    bevelSegments: 3,
+    bevelSegments: 1,
   });
+  textGeometry.center();
+  // textGeometry.computeBoundingBox()
+  // console.log(textGeometry.boundingBox);
+  // textGeometry.translate(
+  //   - (textGeometry.boundingBox.max.x - textGeometry.boundingBox.min.x ) /2,
+  //   - (textGeometry.boundingBox.max.y - textGeometry.boundingBox.min.y ) /2,
+  //   - (textGeometry.boundingBox.max.z - textGeometry.boundingBox.min.z ) /2,
+  // )
+  // textGeometry.computeBoundingBox()
+  // console.log(textGeometry.boundingBox);
 
   textGeometry.center();
   //Materials
@@ -72,12 +84,13 @@ const env = new RGBELoader();
 env.load(`src/squash_court_1k.hdr`, (envMap) => {
   envMap.mapping = THREE.EquirectangularReflectionMapping;
   // scene.background = envMap;
+  // scene.background = envMap;
   scene.environment = envMap;
 });
 
 //Axes Helper
-const axes = new THREE.AxesHelper(2);
-scene.add(axes);
+// const axes = new THREE.AxesHelper(2);
+// scene.add(axes);
 
 //GUI
 // gui.add(lambert, `metalness`).min(0).max(1).step(0.01);
