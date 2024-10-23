@@ -50,8 +50,8 @@ directionalLight.shadow.camera.top = 1;
 directionalLight.shadow.camera.bottom = -1;
 directionalLight.shadow.radius = 5;
 
-const cameraHelper = new THREE.CameraHelper(directionalLight.shadow.camera);
-scene.add(cameraHelper);
+// const cameraHelper = new THREE.CameraHelper(directionalLight.shadow.camera);
+// scene.add(cameraHelper);
 
 //GUI
 
