@@ -1,9 +1,14 @@
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/Addons.js";
+import { GlitchPass, OrbitControls, OutputPass, RenderPass, RenderPixelatedPass, SSAARenderPass, SSAOPass, UnrealBloomPass } from "three/examples/jsm/Addons.js";
 import { GLTFLoader } from "three/examples/jsm/Addons.js";
 import GUI from "lil-gui";
+import { EffectComposer } from "three/examples/jsm/Addons.js";
+import { ARButton } from "three/examples/jsm/Addons.js";
 import "./styles.css";
 
+
+const button = ARButton.createButton()
+document.body.appendChild(button)
 //Base
 const canvas = document.getElementById(`webgl`);
 
@@ -53,11 +58,11 @@ const sofa = gltfLoader.load(`models/grey.glb`, (gltf) => {
 
 // const box = new THREE.Mesh(
 //   new THREE.BoxGeometry(),
-//   new THREE.MeshStandardMaterial()
+//   new THREE.MeshBasicMaterial()
 // );
 // box.position.y = 0.5;
 // box.castShadow = true;
-
+// scene.add(box)
 const ground = new THREE.Mesh(
   new THREE.PlaneGeometry(5, 5),
   new THREE.ShadowMaterial({ opacity: 0.2 })
@@ -120,13 +125,32 @@ renderer.setSize(sizes.x, sizes.y);
 renderer.shadowMap.enabled = true;
 renderer.render(scene, camera);
 
-//Resizing
 
+//Post Processing
+const composer = new EffectComposer(renderer)
+const renderPass = new RenderPass(scene, camera)
+composer.addPass(renderPass)
+// const pixelate = new RenderPixelatedPass(8, scene,camera)
+// composer.addPass(pixelate)
+// console.log(renderPass);
+// const glitchPass = new GlitchPass()
+// composer.addPass(glitchPass)
+// const bloomPass = new UnrealBloomPass( new THREE.Vector2( window.innerWidth, window.innerHeight ), 1.5, 0.4, 0.85 );
+// console.log(bloomPass);
+// composer.addPass(bloomPass)
+const ssao = new SSAOPass(scene, camera)
+composer.addPass(ssao)
+const ssaa = new SSAARenderPass(scene,camera)
+composer.addPass(ssaa)
+const outPass = new OutputPass()
+composer.addPass(outPass)
+
+//Resizing
 window.addEventListener(`resize`, () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.render(scene, camera);
+  composer.setSize(window.innerWidth, window.innerHeight)
 });
 
 //Animation
@@ -135,7 +159,7 @@ const tick = () => {
 
   window.requestAnimationFrame(tick);
 
-  renderer.render(scene, camera);
+  composer.render()
 };
 
 tick();
